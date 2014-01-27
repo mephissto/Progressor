@@ -1,0 +1,25 @@
+{
+    "versionLabel": "1.0.0",
+    "uuid": "475924ce-4897-47b0-b07f-71ffde53248b",
+    "appKeys": {},
+    "longName": "Progressor",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "Progressor",
+    "companyName": "acymbalski",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": [
+            {
+                "menuIcon": true,
+                "type": "png",
+                "name": "IMAGE_ICON",
+                "file": "images/icon.png"
+            }
+        ]
+    }
+}
