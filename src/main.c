@@ -16,6 +16,11 @@ TextLayer *layer_day_percent;
 TextLayer *layer_week_percent;
 TextLayer *layer_month_percent;
 TextLayer *layer_year_percent;
+TextLayer *layer_hour_real;
+TextLayer *layer_day_real;
+TextLayer *layer_week_real;
+TextLayer *layer_month_real;
+TextLayer *layer_year_real;
 
 static Layer *layer_bar;
 Layer *layer_root;
@@ -36,8 +41,9 @@ void text_layer_update();
 int daysInMonth(int month, int year);
 bool isLeapYear(int year);
 
-char *itoa(int num);
 char* floatToString(char* buffer, int bufferSize, double number);
+
+char* intToString(char* buffer, int bufferSize, int number);
 
 void handle_init(void)
 {
@@ -48,17 +54,29 @@ void handle_init(void)
 	window_set_fullscreen(my_window, true);
 	window_set_background_color(my_window, BACKGROUND_COLOR);
 	
-	layer_hour	= text_layer_create(GRect(0, 0, 72, 16));
-	layer_day	= text_layer_create(GRect(0, 32, 72, 16));
-	layer_week	= text_layer_create(GRect(0, 64, 72, 16));
-	layer_month	= text_layer_create(GRect(0, 96, 72, 16));
-	layer_year	= text_layer_create(GRect(0, 128, 72, 16));
+	layer_hour	= text_layer_create(GRect(0, 0, 48, 16));
+	layer_day	= text_layer_create(GRect(0, 32, 48, 16));
+	layer_week	= text_layer_create(GRect(0, 64, 48, 16));
+	layer_month	= text_layer_create(GRect(0, 96, 48, 16));
+	layer_year	= text_layer_create(GRect(0, 128, 48, 16));
 	
-	layer_hour_percent	= text_layer_create(GRect(72, 0, 72, 16));
-	layer_day_percent	= text_layer_create(GRect(72, 32, 72, 16));
-	layer_week_percent	= text_layer_create(GRect(72, 64, 72, 16));
-	layer_month_percent	= text_layer_create(GRect(72, 96, 72, 16));
-	layer_year_percent	= text_layer_create(GRect(72, 128, 72, 16));
+	layer_hour_real	= text_layer_create(GRect(48, 0, 48, 16));
+	layer_day_real	= text_layer_create(GRect(48, 32, 48, 16));
+	layer_week_real	= text_layer_create(GRect(48, 64, 48, 16));
+	layer_month_real= text_layer_create(GRect(48, 96, 48, 16));
+	layer_year_real	= text_layer_create(GRect(48, 128, 48, 16));
+	
+	layer_hour_percent	= text_layer_create(GRect(96, 0, 48, 16));
+	layer_day_percent	= text_layer_create(GRect(96, 32, 48, 16));
+	layer_week_percent	= text_layer_create(GRect(96, 64, 48, 16));
+	layer_month_percent	= text_layer_create(GRect(96, 96, 48, 16));
+	layer_year_percent	= text_layer_create(GRect(96, 128, 48, 16));
+	
+	text_layer_set_text_alignment(layer_hour_real, GTextAlignmentCenter);
+	text_layer_set_text_alignment(layer_day_real, GTextAlignmentCenter);
+	text_layer_set_text_alignment(layer_week_real, GTextAlignmentCenter);
+	text_layer_set_text_alignment(layer_month_real, GTextAlignmentCenter);
+	text_layer_set_text_alignment(layer_year_real, GTextAlignmentCenter);
 	
 	text_layer_set_text_alignment(layer_hour_percent, GTextAlignmentRight);
 	text_layer_set_text_alignment(layer_day_percent, GTextAlignmentRight);
@@ -78,6 +96,12 @@ void handle_init(void)
 	text_layer_set_font(layer_month, fonts_get_system_font(FONT_KEY_GOTHIC_14));
 	text_layer_set_font(layer_year, fonts_get_system_font(FONT_KEY_GOTHIC_14));
 	
+	text_layer_set_font(layer_hour_real, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+	text_layer_set_font(layer_day_real, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+	text_layer_set_font(layer_week_real, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+	text_layer_set_font(layer_month_real, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+	text_layer_set_font(layer_year_real, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+	
 	text_layer_set_font(layer_hour_percent, fonts_get_system_font(FONT_KEY_GOTHIC_14));
 	text_layer_set_font(layer_day_percent, fonts_get_system_font(FONT_KEY_GOTHIC_14));
 	text_layer_set_font(layer_week_percent, fonts_get_system_font(FONT_KEY_GOTHIC_14));
@@ -93,6 +117,12 @@ void handle_init(void)
 	layer_add_child(layer_root, (Layer*) layer_week);
 	layer_add_child(layer_root, (Layer*) layer_month);
 	layer_add_child(layer_root, (Layer*) layer_year);
+	
+	layer_add_child(layer_root, (Layer*) layer_hour_real);
+	layer_add_child(layer_root, (Layer*) layer_day_real);
+	layer_add_child(layer_root, (Layer*) layer_week_real);
+	layer_add_child(layer_root, (Layer*) layer_month_real);
+	layer_add_child(layer_root, (Layer*) layer_year_real);
 	
 	layer_add_child(layer_root, (Layer*) layer_hour_percent);
 	layer_add_child(layer_root, (Layer*) layer_day_percent);
@@ -112,12 +142,26 @@ void handle_init(void)
 	
 }
 
-void handle_deinit(void) {
+void handle_deinit(void)
+{
 	text_layer_destroy(layer_hour);
 	text_layer_destroy(layer_day);
 	text_layer_destroy(layer_week);
 	text_layer_destroy(layer_month);
 	text_layer_destroy(layer_year);
+	
+	text_layer_destroy(layer_hour_real);
+	text_layer_destroy(layer_day_real);
+	text_layer_destroy(layer_week_real);
+	text_layer_destroy(layer_month_real);
+	text_layer_destroy(layer_year_real);
+	
+	text_layer_destroy(layer_hour_percent);
+	text_layer_destroy(layer_day_percent);
+	text_layer_destroy(layer_week_percent);
+	text_layer_destroy(layer_month_percent);
+	text_layer_destroy(layer_year_percent);
+	
 	window_destroy(my_window);
 }
 
@@ -129,11 +173,106 @@ int main(void) {
 
 static void handle_time_tick(struct tm* tick_time, TimeUnits units_changed)
 {
+	static char time_text[] = "00:00";
+    char *time_format;
+	if (clock_is_24h_style())
+		time_format = "%R";
+	else 
+		time_format = "%I:%M";
+	strftime(time_text, sizeof(time_text), time_format, tick_time);
+	text_layer_set_text(layer_hour_real, time_text);
+	
+	static char date_str[6];
+	strcpy(date_str, "");
+	strcat(date_str, intToString("31", 8, t->tm_mday));
+	text_layer_set_text(layer_day_real, date_str);
+	
+	static char weekday_name[10];
+	strcpy(weekday_name, "");
+	switch(t->tm_wday)
+	{
+		case 0:
+			strcat(weekday_name, "Sunday");
+			break;
+		case 1:
+			strcat(weekday_name, "Monday");
+			break;
+		case 2:
+			strcat(weekday_name, "Tuesday");
+			break;
+		case 3:
+			strcat(weekday_name, "Wednesday");
+			break;
+		case 4:
+			strcat(weekday_name, "Thursday");
+			break;
+		case 5:
+			strcat(weekday_name, "Friday");
+			break;
+		case 6:
+			strcat(weekday_name, "Saturday");
+			break;
+		default:
+			strcat(weekday_name, "Errorday");
+			break;
+	}
+	text_layer_set_text(layer_week_real, weekday_name);
+	static char month_name[10];
+	strcpy(month_name, "");
+	switch(t->tm_mon)
+	{
+		case 0:
+			strcat(month_name, "January");
+			break;
+		case 1:
+			strcat(month_name, "February");
+			break;
+		case 2:
+			strcat(month_name, "March");
+			break;
+		case 3:
+			strcat(month_name, "April");
+			break;
+		case 4:
+			strcat(month_name, "May");
+			break;
+		case 5:
+			strcat(month_name, "June");
+			break;
+		case 6:
+			strcat(month_name, "July");
+			break;
+		case 7:
+			strcat(month_name, "August");
+			break;
+		case 8:
+			strcat(month_name, "September");
+			break;
+		case 9:
+			strcat(month_name, "October");
+			break;
+		case 10:
+			strcat(month_name, "November");
+			break;
+		case 11:
+			strcat(month_name, "December");
+			break;
+		default:
+			strcat(month_name, "Errorember");
+			break;
+	}
+	text_layer_set_text(layer_month_real, month_name);
+		
+	static char year_str[8];
+	strcpy(year_str, "");
+	strcat(year_str, intToString("2000", 8, t->tm_year + 1900));
+	text_layer_set_text(layer_year_real, year_str);	
+	
 	hourDecimal = ((double)(t->tm_min) / (double)60);
 	dayDecimal = ((double)((t->tm_hour * 60) + t->tm_min) / (double)1440);
 	weekDecimal = ((double)((t->tm_wday * 1440) + (t->tm_hour * 60) + t->tm_min) / (double)10080);
 	monthDecimal = ((double)(((t->tm_mday - 1) * 1440) + (t->tm_hour * 60) + t->tm_min) / (double)(daysInMonth(t->tm_mon, t->tm_year) * 1440));
-	yearDecimal = ((double)(((t->tm_yday - 1) * 1440) + (t->tm_hour * 60) + t->tm_min) / (double)(isLeapYear(t->tm_year) ? 366 * 1440: 365 * 1440));
+	yearDecimal = ((double)(((t->tm_yday - 1) * 1440) + (t->tm_hour * 60) + t->tm_min) / (double)(isLeapYear(t->tm_year + 1900) ? 366 * 1440: 365 * 1440));
 	
 	text_layer_update();	
 	layer_mark_dirty(layer_bar);
@@ -168,38 +307,40 @@ static void bar_layer_draw(Layer *layer, GContext *ctx)
 
 void text_layer_update()
 {
-	
+	//Hour
 	static char percentHour[100];
 	strcpy(percentHour, "");
 	strcat(percentHour, floatToString("100.00%", 7, 100 * hourDecimal));
 	strcat(percentHour, "%");
 	text_layer_set_text(layer_hour_percent, percentHour);
 	
+	//Day
 	static char percentDay[100];
 	strcpy(percentDay, "");
 	strcat(percentDay, floatToString("100.00%", 7, 100 * dayDecimal));
 	strcat(percentDay, "%");
 	text_layer_set_text(layer_day_percent, percentDay);
 	
+	//Week
 	static char percentWeek[100];
 	strcpy(percentWeek, "");
 	strcat(percentWeek, floatToString("100.00%", 7, 100 * weekDecimal));
 	strcat(percentWeek, "%");
 	text_layer_set_text(layer_week_percent, percentWeek);
 	
+	//Month
 	static char percentMonth[100];
 	strcpy(percentMonth, "");
 	strcat(percentMonth, floatToString("100.00%", 7, 100 * monthDecimal));
 	strcat(percentMonth, "%");
 	text_layer_set_text(layer_month_percent, percentMonth);
 	
+	//Year
 	static char percentYear[100];
 	strcpy(percentYear, "");
 	strcat(percentYear, floatToString("100.00%", 7, 100 * yearDecimal));
 	strcat(percentYear, "%");
 	text_layer_set_text(layer_year_percent, percentYear);
-	
-	
 }
 
 int daysInMonth(int month, int year)
@@ -247,6 +388,15 @@ char* floatToString(char* buffer, int bufferSize, double number)
 	
 	snprintf(decimalBuffer, 5, "%02d", (int)((double)(number - (int)number) * (double)100));
 	strcat(buffer, decimalBuffer);
+	
+	return buffer;
+}
+
+char* intToString(char* buffer, int bufferSize, int number)
+{
+	char decimalBuffer[5];
+	
+	snprintf(buffer, bufferSize, "%d", (int)number);
 	
 	return buffer;
 }
