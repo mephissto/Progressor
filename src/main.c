@@ -54,23 +54,23 @@ void handle_init(void)
 	window_set_fullscreen(my_window, true);
 	window_set_background_color(my_window, BACKGROUND_COLOR);
 	
-	layer_hour	= text_layer_create(GRect(0, 0, 48, 16));
-	layer_day	= text_layer_create(GRect(0, 32, 48, 16));
-	layer_week	= text_layer_create(GRect(0, 64, 48, 16));
-	layer_month	= text_layer_create(GRect(0, 96, 48, 16));
-	layer_year	= text_layer_create(GRect(0, 128, 48, 16));
+	layer_hour	= text_layer_create(GRect(0, 0, 40, 16));
+	layer_day	= text_layer_create(GRect(0, 32, 40, 16));
+	layer_week	= text_layer_create(GRect(0, 64, 40, 16));
+	layer_month	= text_layer_create(GRect(0, 96, 40, 16));
+	layer_year	= text_layer_create(GRect(0, 128, 40, 16));
 	
-	layer_hour_real	= text_layer_create(GRect(48, 0, 48, 16));
-	layer_day_real	= text_layer_create(GRect(48, 32, 48, 16));
-	layer_week_real	= text_layer_create(GRect(48, 64, 48, 16));
-	layer_month_real= text_layer_create(GRect(48, 96, 48, 16));
-	layer_year_real	= text_layer_create(GRect(48, 128, 48, 16));
+	layer_hour_real	= text_layer_create(GRect(40, 0, 64, 16));
+	layer_day_real	= text_layer_create(GRect(40, 32, 64, 16));
+	layer_week_real	= text_layer_create(GRect(40, 64, 64, 16));
+	layer_month_real= text_layer_create(GRect(40, 96, 64, 16));
+	layer_year_real	= text_layer_create(GRect(40, 128, 64, 16));
 	
-	layer_hour_percent	= text_layer_create(GRect(96, 0, 48, 16));
-	layer_day_percent	= text_layer_create(GRect(96, 32, 48, 16));
-	layer_week_percent	= text_layer_create(GRect(96, 64, 48, 16));
-	layer_month_percent	= text_layer_create(GRect(96, 96, 48, 16));
-	layer_year_percent	= text_layer_create(GRect(96, 128, 48, 16));
+	layer_hour_percent	= text_layer_create(GRect(104, 0, 40, 16));
+	layer_day_percent	= text_layer_create(GRect(104, 32, 40, 16));
+	layer_week_percent	= text_layer_create(GRect(104, 64, 40, 16));
+	layer_month_percent	= text_layer_create(GRect(104, 96, 40, 16));
+	layer_year_percent	= text_layer_create(GRect(104, 128, 40, 16));
 	
 	text_layer_set_text_alignment(layer_hour_real, GTextAlignmentCenter);
 	text_layer_set_text_alignment(layer_day_real, GTextAlignmentCenter);
