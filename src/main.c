@@ -72,6 +72,42 @@ void handle_init(void)
 	layer_month_percent	= text_layer_create(GRect(104, 96, 40, 16));
 	layer_year_percent	= text_layer_create(GRect(104, 128, 40, 16));
 	
+	text_layer_set_background_color(layer_hour, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_day, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_week, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_month, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_year, BACKGROUND_COLOR);
+	
+	text_layer_set_background_color(layer_hour_real, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_day_real, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_week_real, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_month_real, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_year_real, BACKGROUND_COLOR);
+	
+	text_layer_set_background_color(layer_hour_percent, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_day_percent, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_week_percent, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_month_percent, BACKGROUND_COLOR);
+	text_layer_set_background_color(layer_year_percent, BACKGROUND_COLOR);
+	
+	text_layer_set_text_color(layer_hour, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_day, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_week, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_month, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_year, FOREGROUND_COLOR);
+	
+	text_layer_set_text_color(layer_hour_real, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_day_real, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_week_real, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_month_real, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_year_real, FOREGROUND_COLOR);
+	
+	text_layer_set_text_color(layer_hour_percent, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_day_percent, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_week_percent, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_month_percent, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_year_percent, FOREGROUND_COLOR);
+	
 	text_layer_set_text_alignment(layer_hour_real, GTextAlignmentCenter);
 	text_layer_set_text_alignment(layer_day_real, GTextAlignmentCenter);
 	text_layer_set_text_alignment(layer_week_real, GTextAlignmentCenter);
