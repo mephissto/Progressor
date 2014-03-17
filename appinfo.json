@@ -1,19 +1,29 @@
 {
-    "versionLabel": "1.1.1",
-    "uuid": "475924ce-4897-47b0-b07f-71ffde53248b",
+    "versionLabel": "1.0",
+    "uuid": "353947ff-c834-492c-8fb6-eb51574702c5",
     "appKeys": {},
-    "longName": "Progressor",
-    "versionCode": 2,
+    "longName": "Progressor2",
+    "versionCode": 1,
     "capabilities": [
         ""
     ],
-    "shortName": "Progressor",
+    "shortName": "Progressor2",
     "companyName": "acymbalski",
     "watchapp": {
         "watchface": true
     },
     "resources": {
         "media": [
+            {
+                "type": "font",
+                "name": "FONT_NUMBERS_34",
+                "file": "fonts/imagine_font.ttf"
+            },
+            {
+                "type": "font",
+                "name": "FONT_NUMBERS_18",
+                "file": "fonts/imagine_font.ttf"
+            },
             {
                 "menuIcon": true,
                 "type": "png",
