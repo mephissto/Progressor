@@ -1,5 +1,5 @@
 {
-    "versionLabel": "1.0",
+    "versionLabel": "1.1.0",
     "uuid": "353947ff-c834-492c-8fb6-eb51574702c5",
     "appKeys": {},
     "longName": "Progressor2",
@@ -15,8 +15,14 @@
     "resources": {
         "media": [
             {
+                "menuIcon": true,
+                "type": "png",
+                "name": "IMAGE_ICON",
+                "file": "images/icon.png"
+            },
+            {
                 "type": "font",
-                "name": "FONT_NUMBERS_34",
+                "name": "FONT_NUMBERS_8",
                 "file": "fonts/imagine_font.ttf"
             },
             {
@@ -25,10 +31,9 @@
                 "file": "fonts/imagine_font.ttf"
             },
             {
-                "menuIcon": true,
-                "type": "png",
-                "name": "IMAGE_ICON",
-                "file": "images/icon.png"
+                "type": "font",
+                "name": "FONT_NUMBERS_40",
+                "file": "fonts/imagine_font.ttf"
             }
         ]
     }
