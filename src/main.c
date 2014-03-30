@@ -158,11 +158,14 @@ static void handle_time_tick(struct tm* tick_time, TimeUnits units_changed)
 	{
 		static char ampm_text[] = "";
 		strftime(ampm_text, sizeof(ampm_text), "%p", tick_time);
-		if (ampm_text[0] == 'A') {
+		
+		if(t->tm_hour < 12)
 			strncpy(ampm_text, "am", sizeof("am"));
-		} else {
+		else if(t->tm_hour >= 12)
 			strncpy(ampm_text, "pm", sizeof("pm"));
-		}
+		else
+			strncpy(ampm_text, "er", sizeof("er"));
+
 		text_layer_set_text(layer_am_pm, ampm_text);
 		
 		time_format = "%I:%M";
