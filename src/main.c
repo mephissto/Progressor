@@ -9,12 +9,15 @@
 #define FONT_LARGE RESOURCE_ID_FONT_NUMBERS_40
 	
 Window *my_window;
+
+//updating progression bars
 InverterLayer *layer_hour;
 InverterLayer *layer_day;
 InverterLayer *layer_week;
 InverterLayer *layer_month;
 InverterLayer *layer_year;
 
+//actual time values
 TextLayer *layer_hour_actual;
 TextLayer *layer_day_actual;
 TextLayer *layer_week_actual;
@@ -27,6 +30,7 @@ Layer *layer_root;
 
 static struct tm *t;
 
+//value percentages
 static float hourDecimal;
 static float dayDecimal;
 static float weekDecimal;
@@ -41,8 +45,6 @@ void text_layer_update();
 int daysInMonth(int month, int year);
 bool isLeapYear(int year);
 
-char* floatToString(char* buffer, int bufferSize, double number);
-
 char* intToString(char* buffer, int bufferSize, int number);
 
 void handle_init(void)
@@ -54,12 +56,14 @@ void handle_init(void)
 	window_set_fullscreen(my_window, true);
 	window_set_background_color(my_window, BACKGROUND_COLOR);
 	
+	//set progress bar locations
 	layer_hour = inverter_layer_create(GRect(0, 61, 144, 47));
 	layer_day = inverter_layer_create(GRect(0, 31, 144, 30));
 	layer_week = inverter_layer_create(GRect(0, 109, 144, 30));
 	layer_month = inverter_layer_create(GRect(0, 0, 144, 30));
 	layer_year = inverter_layer_create(GRect(0, 139, 144, 30));
 	
+	//set actual value locations
 	layer_hour_actual	= text_layer_create(GRect(0, 58, 144, 50));
 	layer_day_actual	= text_layer_create(GRect(0, 32, 144, 30));
 	layer_week_actual	= text_layer_create(GRect(0, 112, 144, 30));
@@ -81,6 +85,7 @@ void handle_init(void)
 	text_layer_set_text_color(layer_year_actual, FOREGROUND_COLOR);
 	text_layer_set_text_color(layer_am_pm, FOREGROUND_COLOR);
 	
+	//load fonts
 	text_layer_set_font(layer_hour_actual, fonts_load_custom_font(resource_get_handle(FONT_LARGE)));
 	text_layer_set_font(layer_day_actual, fonts_load_custom_font(resource_get_handle(FONT_SMALL)));
 	text_layer_set_font(layer_week_actual, fonts_load_custom_font(resource_get_handle(FONT_SMALL)));
@@ -112,10 +117,12 @@ void handle_init(void)
 	layer_add_child(layer_root, (Layer*) layer_month);
 	layer_add_child(layer_root, (Layer*) layer_year);
 	
+	//update values every minute
 	tick_timer_service_subscribe(MINUTE_UNIT, &handle_time_tick);
 	
 	handle_time_tick(t, MINUTE_UNIT);
 	
+	//update screen
 	layer_set_update_proc(layer_bar, bar_layer_draw);
 	layer_mark_dirty(layer_bar);
 	
@@ -136,6 +143,8 @@ void handle_deinit(void)
 	text_layer_destroy(layer_month_actual);
 	text_layer_destroy(layer_year_actual);
 	
+	layer_destroy(layer_bar);
+	
 	window_destroy(my_window);
 }
 
@@ -149,6 +158,8 @@ static void handle_time_tick(struct tm* tick_time, TimeUnits units_changed)
 {
 	static char time_text[] = "00:00";
 	char *time_format;
+	
+	//update actual time value
 	if (clock_is_24h_style())
 	{
 		time_format = "%R";
@@ -173,11 +184,13 @@ static void handle_time_tick(struct tm* tick_time, TimeUnits units_changed)
 	strftime(time_text, sizeof(time_text), time_format, tick_time);
 	text_layer_set_text(layer_hour_actual, time_text);
 	
+	//update actual date value
 	static char date_str[6];
 	strcpy(date_str, "");
 	strcat(date_str, intToString("31", 8, t->tm_mday));
 	text_layer_set_text(layer_day_actual, date_str);
 	
+	//update actual weekday value
 	static char weekday_name[10];
 	strcpy(weekday_name, "");
 	switch(t->tm_wday)
@@ -209,6 +222,7 @@ static void handle_time_tick(struct tm* tick_time, TimeUnits units_changed)
 	}
 	text_layer_set_text(layer_week_actual, weekday_name);
 	
+	//update actual month value
 	static char month_name[10];
 	strcpy(month_name, "");
 	switch(t->tm_mon)
@@ -255,11 +269,13 @@ static void handle_time_tick(struct tm* tick_time, TimeUnits units_changed)
 	}
 	text_layer_set_text(layer_month_actual, month_name);
 	
+	//update actual year value
 	static char year_str[8];
 	strcpy(year_str, "");
 	strcat(year_str, intToString("2000", 8, t->tm_year + 1900));
 	text_layer_set_text(layer_year_actual, year_str);	
 	
+	//caculate exact percentages
 	hourDecimal = ((double)(t->tm_min) / (double)60);
 	dayDecimal = ((double)((t->tm_hour * 60) + t->tm_min) / (double)1440);
 	weekDecimal = ((double)((t->tm_wday * 1440) + (t->tm_hour * 60) + t->tm_min) / (double)10080);
@@ -313,6 +329,7 @@ int daysInMonth(int month, int year)
 	}
 }
 
+//returns true if given year is a leap year
 bool isLeapYear(int year)
 {
 	if(year % 400 == 0)
@@ -329,19 +346,6 @@ bool isLeapYear(int year)
 				return false;
 		}
 	}
-}
-
-char* floatToString(char* buffer, int bufferSize, double number)
-{
-	char decimalBuffer[5];
-	
-	snprintf(buffer, bufferSize, "%d", (int)number);
-	strcat(buffer, ".");
-	
-	snprintf(decimalBuffer, 5, "%02d", (int)((double)(number - (int)number) * (double)100));
-	strcat(buffer, decimalBuffer);
-	
-	return buffer;
 }
 
 char* intToString(char* buffer, int bufferSize, int number)
