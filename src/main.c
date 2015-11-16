@@ -1,7 +1,26 @@
 #include <pebble.h>
-	
+
+#ifdef PBL_COLOR
+  
 #define BACKGROUND_COLOR GColorWhite
-#define FOREGROUND_COLOR GColorBlack
+#define HOUR_COLOR GColorBlue
+#define DAY_COLOR GColorBlue
+#define WEEK_COLOR GColorBlue
+#define MONTH_COLOR GColorBlue
+#define YEAR_COLOR GColorBlue
+  
+#else
+  
+#define BACKGROUND_COLOR GColorBlack
+#define HOUR_COLOR GColorWhite
+#define DAY_COLOR GColorWhite
+#define WEEK_COLOR GColorWhite
+#define MONTH_COLOR GColorWhite
+#define YEAR_COLOR GColorWhite
+
+#endif
+
+
 #define CORNER_MASK GCornerNone
 #define CORNER_SIZE 0
 	
@@ -51,7 +70,10 @@ void handle_init(void)
 	t = localtime(&now);
 	
 	my_window = window_create();
-	window_set_fullscreen(my_window, true);
+	
+#ifdef PBL_PLATFORM_APLITE
+  window_set_fullscreen(my_window, true);
+#endif
 	window_set_background_color(my_window, BACKGROUND_COLOR);
 	
 	layer_hour	= text_layer_create(GRect(0, 0, 40, 16));
@@ -90,23 +112,23 @@ void handle_init(void)
 	text_layer_set_background_color(layer_month_percent, BACKGROUND_COLOR);
 	text_layer_set_background_color(layer_year_percent, BACKGROUND_COLOR);
 	
-	text_layer_set_text_color(layer_hour, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_day, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_week, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_month, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_year, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_hour, HOUR_COLOR);
+  text_layer_set_text_color(layer_day, DAY_COLOR);
+  text_layer_set_text_color(layer_week, WEEK_COLOR);
+  text_layer_set_text_color(layer_month, MONTH_COLOR);
+	text_layer_set_text_color(layer_year, YEAR_COLOR);
 	
-	text_layer_set_text_color(layer_hour_real, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_day_real, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_week_real, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_month_real, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_year_real, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_hour_real, HOUR_COLOR);
+  text_layer_set_text_color(layer_day_real, DAY_COLOR);
+  text_layer_set_text_color(layer_week_real, WEEK_COLOR);
+  text_layer_set_text_color(layer_month_real, MONTH_COLOR);
+	text_layer_set_text_color(layer_year_real, YEAR_COLOR);
 	
-	text_layer_set_text_color(layer_hour_percent, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_day_percent, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_week_percent, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_month_percent, FOREGROUND_COLOR);
-	text_layer_set_text_color(layer_year_percent, FOREGROUND_COLOR);
+	text_layer_set_text_color(layer_hour_percent, HOUR_COLOR);
+  text_layer_set_text_color(layer_day_percent, DAY_COLOR);
+  text_layer_set_text_color(layer_week_percent, WEEK_COLOR);
+  text_layer_set_text_color(layer_month_percent, MONTH_COLOR);
+	text_layer_set_text_color(layer_year_percent, YEAR_COLOR);
 	
 	text_layer_set_text_alignment(layer_hour_real, GTextAlignmentCenter);
 	text_layer_set_text_alignment(layer_day_real, GTextAlignmentCenter);
@@ -316,26 +338,42 @@ static void handle_time_tick(struct tm* tick_time, TimeUnits units_changed)
 
 static void bar_layer_draw(Layer *layer, GContext *ctx)
 {
-	graphics_context_set_stroke_color(ctx, FOREGROUND_COLOR);
-	graphics_context_set_fill_color(ctx, FOREGROUND_COLOR);
-	graphics_context_set_text_color(ctx, FOREGROUND_COLOR);
+	graphics_context_set_stroke_color(ctx, HOUR_COLOR);
+  graphics_context_set_fill_color(ctx, HOUR_COLOR);
+	graphics_context_set_text_color(ctx, HOUR_COLOR);
 	
 	//Hour
 	graphics_draw_rect(ctx, GRect(0, 16, 144, 16));
 	graphics_fill_rect(ctx, GRect(0, 16, 144 * hourDecimal, 16), CORNER_SIZE, CORNER_MASK);
 	
+	graphics_context_set_stroke_color(ctx, DAY_COLOR);
+  graphics_context_set_fill_color(ctx, DAY_COLOR);
+	graphics_context_set_text_color(ctx, DAY_COLOR);
+  
 	//Day
 	graphics_draw_rect(ctx, GRect(0, 48, 144, 16));
 	graphics_fill_rect(ctx, GRect(0, 48, 144 * dayDecimal, 16), CORNER_SIZE, CORNER_MASK);
 	
+	graphics_context_set_stroke_color(ctx, WEEK_COLOR);
+  graphics_context_set_fill_color(ctx, WEEK_COLOR);
+	graphics_context_set_text_color(ctx, WEEK_COLOR);
+  
 	//Week
 	graphics_draw_rect(ctx, GRect(0, 80, 144, 16));
 	graphics_fill_rect(ctx, GRect(0, 80, 144 * weekDecimal, 16), CORNER_SIZE, CORNER_MASK);
+  
+	graphics_context_set_stroke_color(ctx, MONTH_COLOR);
+  graphics_context_set_fill_color(ctx, MONTH_COLOR);
+	graphics_context_set_text_color(ctx, MONTH_COLOR);
 	
 	//Month
 	graphics_draw_rect(ctx, GRect(0, 112, 144, 16));
 	graphics_fill_rect(ctx, GRect(0, 112, 144 * monthDecimal, 16), CORNER_SIZE, CORNER_MASK);
 	
+	graphics_context_set_stroke_color(ctx, YEAR_COLOR);
+  graphics_context_set_fill_color(ctx, YEAR_COLOR);
+	graphics_context_set_text_color(ctx, YEAR_COLOR);
+  
 	//Year
 	graphics_draw_rect(ctx, GRect(0, 144, 144, 16));
 	graphics_fill_rect(ctx, GRect(0, 144, 144 * yearDecimal, 16), CORNER_SIZE, CORNER_MASK);

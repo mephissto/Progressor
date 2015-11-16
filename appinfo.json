@@ -1,25 +1,29 @@
 {
-    "versionLabel": "1.1.1",
-    "uuid": "475924ce-4897-47b0-b07f-71ffde53248b",
     "appKeys": {},
-    "longName": "Progressor",
-    "versionCode": 2,
     "capabilities": [
         ""
     ],
-    "shortName": "Progressor",
-    "companyName": "acymbalski",
-    "watchapp": {
-        "watchface": true
-    },
+    "companyName": "mephissto",
+    "longName": "Progressor Color",
+    "projectType": "native",
     "resources": {
         "media": [
             {
+                "file": "images/icon.png",
                 "menuIcon": true,
-                "type": "png",
                 "name": "IMAGE_ICON",
-                "file": "images/icon.png"
+                "type": "png"
             }
         ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Progressor Color",
+    "targetPlatforms": [
+        "basalt"
+    ],
+    "uuid": "c7feda2f-72bf-440d-827f-0b35dfaec885",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
     }
 }
